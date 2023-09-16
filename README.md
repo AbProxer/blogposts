@@ -1,3 +1,16 @@
+
+## Please run the commands in the order as given below:
+
+### to run application :
+1. composer install
+2. npm install
+3. php artisan server
+4. npm run dev
+
+### to run test cases :
+ php artisan test
+
+
 # Your coding challenge
 
 Welcome to your coding challenge.

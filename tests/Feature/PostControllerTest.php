@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Support\Facades\File;
 use Faker\Factory as Faker;
 
 class PostControllerTest extends TestCase
@@ -42,7 +43,7 @@ class PostControllerTest extends TestCase
             'id' => $faker->uuid,
             'title' => $faker->sentence,
             'subtitle' => $faker->sentence,
-            'post' => $faker->paragraph,
+            'post' => $faker->paragraph(16),
             'tags' => $faker->words(3, true),
             'author' => $faker->name,
             'interviewee' => $faker->name
@@ -57,4 +58,38 @@ class PostControllerTest extends TestCase
             ]);
     }
 
+    public function test_post_deleted_successfully()
+    {
+        $postsJsonPath = storage_path('app/data/posts.json');
+        $posts = json_decode(File::get($postsJsonPath), true);
+
+        if (!empty($posts)) {
+            $randomPost = $posts[array_rand($posts)];
+            $postId = $randomPost['id'];
+        }
+
+        $response = $this->json('DELETE', "/api/post/{$postId}");
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => 'Post deleted successfully',
+            ]);
+
+        $this->assertPostDeleted($postId);
+    }
+
+    protected function assertPostDeleted($postId)
+    {
+        $postsJsonPath = storage_path('app/data/posts.json');
+
+        if (file_exists($postsJsonPath)) {
+            $posts = json_decode(file_get_contents($postsJsonPath), true);
+
+            foreach ($posts as $post) {
+                if (isset($post['id']) && $post['id'] == $postId) {
+                    $this->fail("Post with ID {$postId} was not deleted.");
+                }
+            }
+        }
+    }
 }
