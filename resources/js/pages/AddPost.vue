@@ -83,7 +83,7 @@ export default {
                 subtitle: "",
                 content: "",
                 interviewee: "",
-                tags: "",
+                tags: [],
                 author: "",
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString(),
@@ -100,7 +100,7 @@ export default {
                 this.newPost.updated_at = this.newPost.updated_at.split("T")[0];
 
                 const response = await axios.post("/api/post", this.newPost);
-                console.log("Post created successfully:", response.data);
+                // console.log("Post created successfully:", response.data);
                 this.showSuccessMessage = true;
 
                 // Optionally, you can navigate to the newly created post's page.
@@ -119,7 +119,7 @@ export default {
 
                 setTimeout(() => {
                     this.showSuccessMessage = false;
-                    this.$router.push({ name: "post", params: { id: response.data.id } });
+                    this.$router.push({ name: "Posts"});
                 }, 5000);
 
             } catch (error) {

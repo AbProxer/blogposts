@@ -56,7 +56,7 @@ export default {
             try {
                 const response = await axios.get(`/api/post/${postId}`);
                 this.post = response.data;
-                console.log(response.data);
+                // console.log(response.data);
             } catch (error) {
                 console.error("Error fetching post:", error);
             }

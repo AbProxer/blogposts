@@ -68,7 +68,13 @@ public function store(Request $request)
     // Save the updated array back to the JSON file
     File::put($postsJsonPath, json_encode($posts, JSON_PRETTY_PRINT));
 
-    return response()->json(['message' => 'Post created successfully']);
+    return response()->json(
+        [
+            'message' => 'Post created successfully',
+            'data' => $newPost
+        ],
+    201
+    );
 }
 
 public function destroy($id)
@@ -98,7 +104,7 @@ public function destroy($id)
         // Save the updated array back to the JSON file
         File::put($postsJsonPath, json_encode($posts, JSON_PRETTY_PRINT));
 
-        return response()->json(['message' => 'Post deleted successfully']);
+        return response()->json(['message' => 'Post deleted successfully'], 200);
     } else {
         return response()->json(['message' => 'Post not found'], 404);
     }

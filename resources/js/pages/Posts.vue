@@ -63,7 +63,7 @@ export default {
             try {
                 const response = await axios.get("/api/posts");
                 this.posts = response.data;
-                console.log(response.data);
+                // console.log(response.data);
             } catch (error) {
                 console.error("Error fetching posts:", error);
             }
@@ -74,7 +74,7 @@ export default {
                     await axios.delete(`/api/post/${postId}`);
                     // Remove the deleted post from the local list
                     this.posts = this.posts.filter((post) => post.id !== postId);
-                    console.log(`Post ${postId} deleted successfully.`);
+                    // console.log(`Post ${postId} deleted successfully.`);
                 } catch (error) {
                     console.error(`Error deleting post ${postId}:`, error);
                 }
