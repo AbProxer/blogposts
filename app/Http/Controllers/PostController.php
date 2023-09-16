@@ -28,6 +28,26 @@ public function index()
     
 }
 
+public function getPost($postId)
+{
+    $dataPath = storage_path('app/data/posts.json');
+
+    if (File::exists($dataPath)) {
+        $postsJsonData = json_decode(File::get($dataPath), true);
+
+        // Check if the post with the given ID exists in the JSON data
+        if (isset($postsJsonData[$postId])) {
+            $post = $postsJsonData[$postId-1];
+            return response()->json($post);
+        } else {
+            return response()->json(["message" => "Post not found"], 404);
+        }
+    } else {
+        return response()->json(["message" => "No posts JSON file found"], 404);
+    }
+}
+
+
 public function store(Request $request)
 {
     $newPost = $request->all();
@@ -62,7 +82,7 @@ public function destroy($id)
     // Check if the post with the specified ID exists
     if (isset($posts[$id])) {
         // Remove the post from the array
-        unset($posts[$id]);
+        unset($posts[$id-1]);
 
         // Reindex the array
         $posts = array_values($posts);
