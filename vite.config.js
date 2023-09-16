@@ -8,4 +8,7 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        port: 8000, // Change this to match Laravel's port
+    },
 });
