@@ -1,31 +1,50 @@
 <template>
-    <div class="blog">
-        <h1>Blog Posts</h1>
-        <ul>
-            <li v-for="post in posts" :key="post.id" class="blog-post">
-                <router-link :to="{ name: 'blogPost', params: { id: post.id, data: post.title } }" >
-                    <h2>{{ post.title }}</h2>
-                    <h3>{{ post.subtitle }}</h3>
-                    <div class="post-content">{{ post.post }}</div>
-                    <div class="meta">
-                        <div class="tags">
-                            Tags:
-                            <span v-for="tag in post.tags" :key="tag">{{
-                                tag
-                            }}</span>
-                        </div>
-                        <div class="author">Author: {{ post.author }}</div>
-                        <div class="date">
-                            Published:
-                            {{ new Date(post.created_at).toLocaleDateString() }}
-                        </div>
-                        <button @click="deletePost(post.id)">Delete</button>
-                    </div>
-                </router-link>
-            </li>
-        </ul>
-    </div>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Explore Our Blog</h1>
+    <ul class="list-group">
+      <li
+        v-for="post in posts"
+        :key="post.id"
+        class="list-group-item mb-4 shadow p-3 mb-5 bg-white rounded"
+      >
+        <router-link
+          :to="{ name: 'blogPost', params: { id: post.id, data: post.title } }"
+          class="text-decoration-none"
+        >
+          <div>
+            <h2 class="mb-3">{{ post.title }}</h2>
+            <h3 class="mb-4 text-muted">{{ post.subtitle }}</h3>
+            <div class="mb-3">
+            <strong style="color: #535252">Tags: </strong>
+            <span
+              v-for="tag in post.tags"
+              :key="tag"
+              class="badge badge-pill badge-primary ml-1 mb-1"
+              style="background-color: #7488ed; color: #f8f3f3; margin-right: 6px;"
+            >
+              {{ tag }}
+            </span>
+          </div>
+            <div class="mb-2">
+              <strong style="color: #535252">Author:</strong> {{ post.author }}
+            </div>
+            <div>
+              <strong style="color: #535252">Published:</strong>
+              {{ new Date(post.created_at).toLocaleDateString() }}
+            </div>
+          </div>
+        </router-link>
+        <button
+          @click="deletePost(post.id)"
+          class="btn btn-danger btn-sm float-end mt-3"
+        >
+          Delete
+        </button>
+      </li>
+    </ul>
+  </div>
 </template>
+
 
 <script>
 import axios from "axios";

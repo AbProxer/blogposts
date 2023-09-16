@@ -35,13 +35,15 @@ public function getPost($postId)
     if (File::exists($dataPath)) {
         $postsJsonData = json_decode(File::get($dataPath), true);
 
-        // Check if the post with the given ID exists in the JSON data
-        if (isset($postsJsonData[$postId])) {
-            $post = $postsJsonData[$postId-1];
-            return response()->json($post);
-        } else {
-            return response()->json(["message" => "Post not found"], 404);
+        // Loop through the posts to find the one with the matching ID
+        foreach ($postsJsonData as $post) {
+            if (isset($post['id']) && $post['id'] == $postId) {
+                return response()->json($post);
+            }
         }
+
+        // If no post with the given ID is found, return a 404 response
+        return response()->json(["message" => "Post not found"], 404);
     } else {
         return response()->json(["message" => "No posts JSON file found"], 404);
     }
@@ -79,13 +81,19 @@ public function destroy($id)
         $posts = [];
     }
 
-    // Check if the post with the specified ID exists
-    if (isset($posts[$id])) {
-        // Remove the post from the array
-        unset($posts[$id-1]);
+    // Search for the post with the specified ID
+    $postIndex = null;
+    foreach ($posts as $index => $post) {
+        if (isset($post['id']) && $post['id'] == $id) {
+            $postIndex = $index;
+            break;
+        }
+    }
 
-        // Reindex the array
-        $posts = array_values($posts);
+    // Check if the post with the specified ID was found
+    if ($postIndex !== null) {
+        // Remove the post from the array
+        array_splice($posts, $postIndex, 1);
 
         // Save the updated array back to the JSON file
         File::put($postsJsonPath, json_encode($posts, JSON_PRETTY_PRINT));
@@ -95,5 +103,6 @@ public function destroy($id)
         return response()->json(['message' => 'Post not found'], 404);
     }
 }
+
 
 }

@@ -1,23 +1,35 @@
 <template>
-    <div class="blog-post" v-if="post">
-        <h2>{{ post.title }}</h2>
-        <h3>{{ post.subtitle }}</h3>
-        <div class="post-content">{{ post.content }}</div>
-        <div class="meta">
-            <div class="tags">
-                Tags:
-                <span v-for="tag in post.tags" :key="tag">{{ tag }}</span>
-            </div>
-            <div class="author">Author: {{ post.author }}</div>
-            <div class="date">
-                Published:
-                {{ new Date(post.created_at).toLocaleDateString() }}
-            </div>
+  <div v-if="post" class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h2 class="mt-4">{{ post.title }}</h2>
+        <h4 class="mt-4">{{ post.subtitle }}</h4>
+        <div class="mt-3">{{ post.content }}</div>
+        <div class="mt-4">
+          <div>
+            <strong> Tags:  </strong> 
+            <span v-for="tag in post.tags" :key="tag" 
+            class="badge badge-primary ml-1"
+            style="background-color: #5ab9c1; color: #ffffff; margin-right: 6px;"
+            >
+              {{ tag }}
+            </span>
+          </div>
+          <div class="mt-3"><strong>Author:  </strong> {{ post.author }}</div>
+          <div class="mt-3">
+            <strong>Published: </strong> {{ new Date(post.created_at).toLocaleDateString() }}
+          </div>
+          <div class="mt-3">{{ post.post }}</div>
+          <div class="mt-3">
+            <strong>Interviewee:  </strong> {{ post.interviewee }}
+          </div>
         </div>
+      </div>
     </div>
-    <div v-else>
-        <p>Loading...</p>
-    </div>
+  </div>
+  <div v-else>
+    <p>Loading...</p>
+  </div>
 </template>
 
 <script>
